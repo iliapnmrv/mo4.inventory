@@ -1,0 +1,32 @@
+html,
+body,
+p {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.pg-viewer-wrapper {
+    overflow-y: auto !important;
+    overflow-x: auto;
+    max-height: 400px;
+}
+
+.photo-viewer-container {
+    width: unset !important;
+    height: unset !important;
+}
+
+.photo-viewer-container>img {
+    width: 100% !important;
+    height: 100% !important;
+}

@@ -1,0 +1,196 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Item {
+  id                     Int                  @id @default(autoincrement())
+  qr                     Int                  @unique
+  name                   String
+  month                  Int
+  year                   Int
+  serial_number          String               @unique
+  model                  String
+  description            String?              @db.VarChar(2048)
+  additional_information String?              @db.VarChar(2048)
+  status_id              Int
+  user_id                Int
+  person_id              Int
+  place_id               Int
+  device_id              Int
+  type_id                Int
+  createdAt              DateTime?            @default(now())
+  updatedAt              DateTime?            @updatedAt
+  instruction_id         Int?
+  files                  File[]
+  inventory_not_found    Inventory_not_found?
+  device                 Device               @relation(fields: [device_id], references: [id])
+  instruction            Instruction?         @relation(fields: [instruction_id], references: [id])
+  person                 Person               @relation(fields: [person_id], references: [id])
+  place                  Place                @relation(fields: [place_id], references: [id])
+  status                 Status               @relation(fields: [status_id], references: [id])
+  type                   Type                 @relation(fields: [type_id], references: [id])
+  user                   User                 @relation(fields: [user_id], references: [id])
+  logs                   Log[]
+  stock_items            Stock[]              @relation("ItemToStock")
+
+  @@index([device_id], map: "Item_device_id_fkey")
+  @@index([person_id], map: "Item_person_id_fkey")
+  @@index([place_id], map: "Item_place_id_fkey")
+  @@index([status_id], map: "Item_status_id_fkey")
+  @@index([type_id], map: "Item_type_id_fkey")
+  @@index([user_id], map: "Item_user_id_fkey")
+  @@index([instruction_id], map: "Item_instruction_id_fkey")
+  @@fulltext([description])
+  @@fulltext([name])
+  @@fulltext([serial_number])
+  @@fulltext([model])
+  @@fulltext([additional_information])
+}
+
+model Log {
+  id          Int      @id @default(autoincrement())
+  description String?  @db.VarChar(10240)
+  created_at  DateTime @default(now())
+  author      String
+  item_qr     Int
+  item        Item     @relation(fields: [item_qr], references: [qr], onDelete: Cascade)
+
+  @@index([item_qr], map: "Log_item_qr_fkey")
+}
+
+model Stock {
+  id          Int          @id @default(autoincrement())
+  name        String?      @db.VarChar(1024)
+  quantity    Int
+  description String?      @db.VarChar(10240)
+  device_id   Int
+  device      Stock_device @relation(fields: [device_id], references: [id])
+  logs        Stock_log[]
+  items       Item[]       @relation("ItemToStock")
+
+  @@index([device_id], map: "Stock_device_id_fkey")
+}
+
+model Stock_log {
+  id            Int         @id @default(autoincrement())
+  description   String?     @db.VarChar(10240)
+  created_at    DateTime    @default(now())
+  author        String
+  amount        Int
+  type          StockAction @default(add)
+  stock_item_id Int
+  stock_item    Stock       @relation(fields: [stock_item_id], references: [id], onDelete: Cascade)
+
+  @@index([stock_item_id], map: "StockLog_stock_item_id_fkey")
+}
+
+model Inventory {
+  id             Int    @id @default(autoincrement())
+  vedpos         Int
+  name           String
+  place          String
+  kolvo          Int
+  place_priority Int
+}
+
+model Inventory_not_found {
+  id      Int  @id @default(autoincrement())
+  item_qr Int  @unique
+  item    Item @relation(fields: [item_qr], references: [qr])
+}
+
+model Inventory_report {
+  id             Int    @id @default(autoincrement())
+  kolvo          Int
+  name           String
+  place          String
+  place_priority Int
+  vedpos         Int
+}
+
+model File {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  item_id    Int?
+  path       String
+  item       Item?    @relation(fields: [item_id], references: [id], onDelete: Cascade)
+
+  @@index([item_id], map: "File_item_id_fkey")
+}
+
+model Instruction {
+  id         Int      @id @default(autoincrement())
+  name       String
+  path       String
+  created_at DateTime @default(now())
+  items      Item[]
+}
+
+model Status {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+model Person {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+model Place {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+model Device {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+model Stock_device {
+  id    Int     @id @default(autoincrement())
+  name  String
+  items Stock[]
+
+  @@fulltext([name])
+}
+
+model Type {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+
+  @@fulltext([name])
+}
+
+enum StockAction {
+  sub
+  add
+}
