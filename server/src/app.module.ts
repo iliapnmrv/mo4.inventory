@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
-import { FileModule } from './file/file.module';
-import { ItemModule } from './item/item.module';
-import { InventoryModule } from './inventory/inventory.module';
-import { CatalogModule } from './catalog/catalog.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
-import { StockModule } from './stock/stock.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { ScheduleModule } from '@nestjs/schedule';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { CatalogModule } from './catalog/catalog.module';
+import { FileModule } from './file/file.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { ItemModule } from './item/item.module';
+import { StockModule } from './stock/stock.module';
 
 @Module({
   imports: [

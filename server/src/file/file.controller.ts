@@ -1,3 +1,4 @@
+import { File, Instruction } from '.prisma/client';
 import {
   Controller,
   Delete,
@@ -12,7 +13,6 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { File, Instruction } from '.prisma/client';
 import { Request } from 'express';
 import * as moment from 'moment';
 import { diskStorage } from 'multer';
@@ -23,7 +23,6 @@ import {
   ResInstructionUploadDto,
 } from './dto/instruction-upload.dto';
 import { FileService } from './file.service';
-import { Cron, CronExpression } from '@nestjs/schedule';
 
 @ApiTags('File')
 @UseGuards(AuthGuard('jwt'))
