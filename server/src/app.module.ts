@@ -27,7 +27,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     InventoryModule,
     CatalogModule,
     StockModule,
-    ScheduleModule.forRoot(),
   ],
   providers: [
     {

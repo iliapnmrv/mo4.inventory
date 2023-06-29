@@ -124,12 +124,4 @@ export class FileService {
     });
     return instruction;
   }
-
-  async createDBDump() {
-    console.log('creating backup');
-    exec(join(__dirname, '..', '..', 'db_backup.sh'), (err) => {
-      console.log(err);
-      throw new HttpException('Backup error', HttpStatus.INTERNAL_SERVER_ERROR);
-    });
-  }
 }

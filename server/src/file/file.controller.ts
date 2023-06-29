@@ -118,10 +118,4 @@ export class FileController {
   deleteFile(@Param('id') id: string, @Req() { user }: Request) {
     return this.fileService.deleteFile(+id, user);
   }
-
-  @Cron(CronExpression.EVERY_12_HOURS)
-  // @Cron(CronExpression.EVERY_10_SECONDS)
-  createDBDump() {
-    return this.fileService.createDBDump();
-  }
 }
