@@ -23,6 +23,7 @@ import {
   ResInstructionUploadDto,
 } from './dto/instruction-upload.dto';
 import { FileService } from './file.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @ApiTags('File')
 @UseGuards(AuthGuard('jwt'))
@@ -59,11 +60,15 @@ export class FileController {
     }),
   )
   uploadInstruction(
-    @Param('model') model: string,
+    @Param() params: Record<string, string>,
     @UploadedFile() instruction: Express.Multer.File,
     @Req() { user }: Request,
   ): Promise<Instruction> {
-    return this.fileService.uploadInstruction(instruction, model, user);
+    return this.fileService.uploadInstruction(
+      instruction,
+      Object.values(params)[0],
+      user,
+    );
   }
 
   /**
@@ -112,5 +117,11 @@ export class FileController {
   @ApiResponse({ status: 200, type: ResFileUploadDto })
   deleteFile(@Param('id') id: string, @Req() { user }: Request) {
     return this.fileService.deleteFile(+id, user);
+  }
+
+  @Cron(CronExpression.EVERY_12_HOURS)
+  // @Cron(CronExpression.EVERY_10_SECONDS)
+  createDBDump() {
+    return this.fileService.createDBDump();
   }
 }

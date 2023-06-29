@@ -3,6 +3,8 @@
 /node_modules
 
 /static
+/backups
+/*.cnf
 
 # Logs
 logs

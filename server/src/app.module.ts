@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { StockModule } from './stock/stock.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthGuard } from '@nestjs/passport';
     InventoryModule,
     CatalogModule,
     StockModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [
     {

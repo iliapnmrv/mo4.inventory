@@ -1,11 +1,17 @@
 import { File, Instruction } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { exec } from 'child_process';
+import { join } from 'path';
 import { PrismaService } from 'src/prisma.service';
 import { TokenPayload } from 'src/types/types';
 
 @Injectable()
 export class FileService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    protected configService: ConfigService,
+  ) {}
 
   async uploadFiles(
     files: Express.Multer.File[],
@@ -117,5 +123,13 @@ export class FileService {
       })),
     });
     return instruction;
+  }
+
+  async createDBDump() {
+    console.log('creating backup');
+    exec(join(__dirname, '..', '..', 'db_backup.sh'), (err) => {
+      console.log(err);
+      throw new HttpException('Backup error', HttpStatus.INTERNAL_SERVER_ERROR);
+    });
   }
 }
