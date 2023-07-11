@@ -19,10 +19,10 @@ export const ItemNames = {
 };
 
 export const CatalogNames = {
-  persons: "МОЛ",
-  statuses: "Статус",
-  users: "Пользователь",
-  places: "Местоположение",
-  devices: "Устройства",
-  types: "Тип",
+  person: "МОЛ",
+  status: "Статус",
+  user: "Пользователь",
+  place: "Местоположение",
+  device: "Устройства",
+  type: "Тип",
 };
