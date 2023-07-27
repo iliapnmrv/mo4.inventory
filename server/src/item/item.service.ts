@@ -18,6 +18,7 @@ import {
   Type,
   User,
 } from '.prisma/client';
+import { removeEmptyValuesFromObject } from 'src/utils/utils';
 
 @Injectable()
 export class ItemService {
@@ -400,8 +401,10 @@ export class ItemService {
         const prev = await this.prisma.item.findFirst({ where: { qr: +qr } });
         const updated = await this.prisma.item.update({
           where: { qr: +qr },
-          //@ts-ignore
-          data: { ...updateItemDto, updatedAt: new Date() },
+          data: {
+            ...removeEmptyValuesFromObject(updateItemDto),
+            updatedAt: new Date(),
+          },
         });
 
         delete updated.createdAt;
