@@ -33,7 +33,7 @@ export class FileController {
   /**
    * Upload inventory to all items with `model`
    */
-  @Post('instruction/*')
+  @Post('instruction/:model')
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: InstructionUploadDto })
   @ApiResponse({ status: 201, type: ResInstructionUploadDto })
@@ -42,9 +42,10 @@ export class FileController {
       storage: diskStorage({
         destination: './static',
         filename: (req, file, callback) => {
-          const uniqueSuffix = `Инструкция ${
-            req.params.model
-          }-${moment().format('DD.MM.YYYY')}`;
+          const uniqueSuffix = `Инструкция ${req.params.model.replace(
+            /[/\\?%*:|"<>]/g,
+            '-',
+          )}-${moment().format('DD.MM.YYYY HH-mm')}`;
           const ext = extname(file.originalname);
           const filename = `${uniqueSuffix}${ext}`;
           callback(null, filename);
@@ -59,15 +60,11 @@ export class FileController {
     }),
   )
   uploadInstruction(
-    @Param() params: Record<string, string>,
+    @Param('model') model: string,
     @UploadedFile() instruction: Express.Multer.File,
     @Req() { user }: Request,
   ): Promise<Instruction> {
-    return this.fileService.uploadInstruction(
-      instruction,
-      Object.values(params)[0],
-      user,
-    );
+    return this.fileService.uploadInstruction(instruction, model, user);
   }
 
   /**
