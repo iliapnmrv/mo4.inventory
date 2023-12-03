@@ -1270,9 +1270,11 @@ const Item = (props: Props) => {
         handleClose={() => setFileToDelete({})}
         text={`Удалить ${
           fileToDelete?.type === "file" ? "файл" : "инструкцию"
-        } с наименованием ${fileToDelete.name} у всех позиций с моделью ${
-          item?.model
-        }?`}
+        } с наименованием ${fileToDelete.name} ${
+          fileToDelete?.type === "file"
+            ? ""
+            : `у всех позиций с моделью ${item?.model}`
+        } ?`}
         confirmAction={handleFileToDelete}
         confirmText={"Да, удалить"}
       />
