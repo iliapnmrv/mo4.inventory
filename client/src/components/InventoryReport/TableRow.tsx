@@ -38,11 +38,11 @@ const Row: FC<Props> = ({ row }) => {
         </TableCell>
         <TableCell align="right">
           <span title="Не найдено по позиции">{row.not_found}</span> /{" "}
-          <span title="Количество в наличии">{row._count}</span>
+          <span title="Всего по позиции">{row._count}</span>
         </TableCell>
         <TableCell align="right">
-          <span title="Остаток по позиции">{row.remainder}</span> /{" "}
-          <span title="Всего числится">{row.kolvo}</span>
+          <span title="Не найдено">{row.remainder}</span> /{" "}
+          <span title="Имеется в базе">{row.kolvo}</span>
         </TableCell>
       </TableRow>
       <TableRow>

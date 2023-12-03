@@ -103,7 +103,7 @@ model Inventory {
 model Inventory_not_found {
   id      Int  @id @default(autoincrement())
   item_qr Int  @unique
-  item    Item @relation(fields: [item_qr], references: [qr])
+  item    Item @relation(fields: [item_qr], references: [qr], onDelete: Cascade)
 }
 
 model Inventory_report {

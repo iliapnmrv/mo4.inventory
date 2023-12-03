@@ -52,8 +52,8 @@ const StockItem = () => {
 
   const { data: catalogs } = useGetCatalogsQuery();
 
-  const findStock = async (id: number) => {
-    const stock = await getStock(id).unwrap();
+  const findStock = async (stockId: number) => {
+    const { id, ...stock } = await getStock(stockId).unwrap();
     reset(stock);
   };
 

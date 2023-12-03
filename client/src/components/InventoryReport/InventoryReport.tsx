@@ -89,10 +89,10 @@ const InventoryReport = ({ open, setOpen }: Props) => {
                     <TableCell>№ в ведомости</TableCell>
                     <TableCell>Местоположение</TableCell>
                     <TableCell>Наименование</TableCell>
-                    <TableCell align="right">Не найдено</TableCell>
                     <TableCell align="right">
-                      Нужное количество (по бухгалтерии)
+                      Итог по позиции Пропущено/Всего
                     </TableCell>
+                    <TableCell align="right">Всего по учету</TableCell>
                     {/* <TableCell align="right">Числится</TableCell> */}
                   </TableRow>
                 </TableHead>
