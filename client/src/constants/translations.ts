@@ -1,3 +1,5 @@
+import { ICatalogs } from "redux/catalog/catalog.api";
+
 export const ItemNames = {
   id: "",
   qr: "QR",
@@ -18,11 +20,12 @@ export const ItemNames = {
   updatedAt: "",
 };
 
-export const CatalogNames = {
+export const CatalogNames: Record<ICatalogs, string> = {
   person: "МОЛ",
   status: "Статус",
   user: "Пользователь",
   place: "Местоположение",
   device: "Устройства",
   type: "Тип",
+  stock_device: "Устройства (Склад)",
 };

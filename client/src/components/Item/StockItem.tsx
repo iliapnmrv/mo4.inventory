@@ -65,6 +65,7 @@ const StockItem = () => {
 
   const handleStockClose = () => {
     router.back();
+    reset({});
   };
 
   const { control, reset, handleSubmit } = useForm<StockFields>();
