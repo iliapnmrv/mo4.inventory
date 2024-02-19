@@ -11,6 +11,7 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  IconButton,
   InputAdornment,
   InputLabel,
   NativeSelect,
@@ -39,6 +40,7 @@ import {
   useExportDataMutation,
 } from "redux/item/item.api";
 import { getItems } from "src/api/api";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function Home() {
   const [exportData] = useExportDataMutation();
@@ -213,7 +215,19 @@ export default function Home() {
                         </InputAdornment>
                       }
                       value={value}
-                      inputProps={{ style: { padding: "7.5px 3px" } }}
+                      inputProps={{
+                        style: { padding: "7.5px 0px" },
+                      }}
+                      endAdornment={
+                        value && (
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() => onChange("")}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        )
+                      }
                       onChange={onChange}
                       fullWidth
                     />

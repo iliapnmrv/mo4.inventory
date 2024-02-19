@@ -1,17 +1,12 @@
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import {
-  Box,
-  Button,
-  IconButton,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import {
   ICatalogs,
   useCreateCatalogMutation,
+  useGetCatalogsQuery,
   useUpdateCatalogMutation,
 } from "redux/catalog/catalog.api";
 import { CatalogNames } from "src/constants/translations";
@@ -31,10 +26,13 @@ const CatalogModal = ({
   defaultValue,
   catalogType,
 }: Props) => {
-  const [createCatalog] = useCreateCatalogMutation();
-  const [updateCatalog] = useUpdateCatalogMutation();
+  const [createCatalog, { isLoading: isCreateCatalogLoading }] =
+    useCreateCatalogMutation();
+  const [updateCatalog, { isLoading: isUpdateCatalogLoading }] =
+    useUpdateCatalogMutation();
 
   const [value, setValue] = useState<string>(defaultValue);
+  const { data: catalogs } = useGetCatalogsQuery();
 
   useEffect(() => {
     setValue(defaultValue);
@@ -45,6 +43,14 @@ const CatalogModal = ({
   const onSubmit = async () => {
     try {
       if (type === "create") {
+        if (
+          catalogs[catalogType].find(
+            (catalog) => catalog.name.toLowerCase() === value.toLowerCase()
+          )
+        ) {
+          return enqueueSnackbar("Наименование занято", { variant: "error" });
+        }
+
         const response = await createCatalog({
           catalog: catalogType,
           name: value,
@@ -113,9 +119,14 @@ const CatalogModal = ({
           variant="outlined"
           defaultValue={defaultValue}
         />
-        <Button variant="contained" disabled={!value} onClick={onSubmit}>
+        <LoadingButton
+          loading={isUpdateCatalogLoading || isCreateCatalogLoading}
+          variant="contained"
+          disabled={!value}
+          onClick={onSubmit}
+        >
           Сохранить
-        </Button>
+        </LoadingButton>
       </Box>
     </Modal>
   );

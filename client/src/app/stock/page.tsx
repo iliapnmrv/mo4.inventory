@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   FormControl,
+  IconButton,
   InputAdornment,
   OutlinedInput,
   TextField,
@@ -25,6 +26,7 @@ import {
   useGetStockItemsQuery,
 } from "redux/stock/stock.api";
 import { ItemNames } from "src/constants/translations";
+import ClearIcon from "@mui/icons-material/Clear";
 
 type StockFields = {
   q: string;
@@ -158,6 +160,16 @@ export default function Home() {
                     <InputAdornment position="start">
                       <SearchOutlinedIcon />
                     </InputAdornment>
+                  }
+                  endAdornment={
+                    value && (
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => onChange("")}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    )
                   }
                   value={value}
                   inputProps={{ style: { padding: "7.5px 3px" } }}
