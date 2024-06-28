@@ -38,7 +38,7 @@ export class StockService {
           ? [
               { name: { contains: q } },
               { description: { contains: q } },
-              { logs: { some: { description: q } } },
+              { logs: { some: { description: { contains: q } } } },
               {
                 device_id: {
                   in: q_catalogs.stock_device.map((status) => status.id),
