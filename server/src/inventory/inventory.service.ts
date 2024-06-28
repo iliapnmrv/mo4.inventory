@@ -159,7 +159,7 @@ export class InventoryService {
       })
     ).map((item) => ({ in_stock: item._count, name: item.model }));
     const res = listed.map((itm) => ({
-      ...in_stock.find((item) => item.name === itm.name && item),
+      ...in_stock.find((item) => item.name === itm.name),
       ...itm,
     }));
 
