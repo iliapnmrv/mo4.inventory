@@ -33,7 +33,7 @@ import QR from "components/QR/QR";
 import LogsTable from "components/Table/LogsTable";
 import { useActions } from "hooks/actions";
 import { useAppSelector } from "hooks/redux";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import "photoswipe/dist/photoswipe.css";
 import { useEffect, useMemo, useState } from "react";
@@ -64,7 +64,11 @@ import { useGetStockItemsQuery } from "redux/stock/stock.api";
 import { queryClient } from "src/app/providers";
 import { ItemNames } from "src/constants/translations";
 import { IException } from "src/types/types";
-import { QRzeros, convertIntObj } from "src/utils/utils";
+import {
+  QRzeros,
+  convertIntObj,
+  removeBasepathFromPathname,
+} from "src/utils/utils";
 import SelectedItems from "./SelectedItems";
 
 type Props = {};
@@ -90,6 +94,7 @@ export type ItemFields = {
 const Item = (props: Props) => {
   const [getItem, { data: item }] = useLazyGetItemQuery();
 
+  const pathname = usePathname();
   const [instruction, setInstruction] = useState<IFile>();
   const [files, setFiles] = useState<IFile[]>();
   const [openAddStock, setOpenAddStock] = useState<boolean>(false);
@@ -212,7 +217,7 @@ const Item = (props: Props) => {
     )
       return;
     reset({});
-    router.back();
+    router.push("/");
   };
 
   const onSubmit = async (values: ItemFields) => {
@@ -247,7 +252,12 @@ const Item = (props: Props) => {
       if (type === "create" || type === "copy") {
         //@ts-ignore
         const response = await createItem(convertIntObj(values)).unwrap();
-        enqueueSnackbar(`Создано ${QRzeros(values.qr)}`);
+        enqueueSnackbar(`Создано ${QRzeros(response.qr)}`);
+        router.push(
+          `${removeBasepathFromPathname(pathname)}/?qr=${
+            response.qr
+          }&type=edit&modalType=qr`
+        );
       }
       router.back();
       reset({});

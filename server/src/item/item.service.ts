@@ -79,7 +79,7 @@ export class ItemService {
     include = false,
     includeLogs = false,
     sortBy = 'qr',
-    direction = 'asc',
+    direction = 'desc',
     showArchive,
     offset = 0,
     limit = 20,

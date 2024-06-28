@@ -337,11 +337,11 @@ export default function Home() {
                     }}
                     input={<OutlinedInput id="q" label="Сортировка" />}
                   >
-                    <option value='{"sortBy": "qr", "direction": "asc"}'>
-                      По возрастанию QR {"1 -> 1000"}
-                    </option>
                     <option value='{"sortBy": "qr", "direction": "desc"}'>
                       По убыванию QR {"1000 -> 1"}
+                    </option>
+                    <option value='{"sortBy": "qr", "direction": "asc"}'>
+                      По возрастанию QR {"1 -> 1000"}
                     </option>
                     <option value='{"sortBy": "createdAt", "direction": "desc"}'>
                       По дате создания
