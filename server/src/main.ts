@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as moment from 'moment';
 //@ts-ignore
 import localization from 'moment/locale/ru.js';
+import { json, urlencoded } from 'express';
 
 moment.updateLocale('ru', localization);
 
@@ -17,6 +18,8 @@ async function bootstrap() {
   app.enableCors({ credentials: true });
   app.setGlobalPrefix('api');
   app.use(cookieParser());
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   const config = new DocumentBuilder()
     .setTitle('Инвентаризация')
