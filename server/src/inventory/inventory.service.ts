@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import * as XLSX from 'xlsx';
 import { Inventory as IInventory } from '.prisma/client';
 import { ImportInventoryReportDto } from './dto/import-inventory-report.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class InventoryService {
@@ -39,16 +40,19 @@ export class InventoryService {
   }
 
   async importReport(importInventory: ImportInventoryReportDto) {
-    const { qrs, inventory } = importInventory;
+    const { scanned, inventory } = importInventory;
 
     await this.prisma.inventory_report.deleteMany({});
     await this.prisma.inventory_not_found.deleteMany({});
+    await this.prisma.inventory_scanned.deleteMany({});
+
+    const scannedQrs: number[] = scanned.map((scan) => scan.inventoryNum);
 
     const items = await this.prisma.item.findMany({
       where: {
         NOT: {
           qr: {
-            in: qrs,
+            in: scannedQrs,
           },
         },
       },
@@ -59,9 +63,25 @@ export class InventoryService {
       data: items.map((item) => ({ item_qr: item.qr })),
     });
 
+    await this.prisma.inventory_scanned.createMany({
+      data: scanned.map((scan) => ({
+        ...scan,
+        createdAt: moment(scan.createdAt).toDate(),
+      })),
+    });
+
     await this.prisma.inventory_report.createMany({
       data: inventory.map(({ updatedAt, ...inventory }) => inventory),
     });
+
+    await this.prisma.$transaction(
+      scanned.map(({ inventoryNum, createdAt }) =>
+        this.prisma.item.update({
+          where: { qr: +inventoryNum },
+          data: { last_found_at: moment(createdAt).toDate() },
+        }),
+      ),
+    );
 
     return { data: 'Успешно загружено' };
   }

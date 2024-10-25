@@ -1,6 +1,6 @@
-import { Inventory_report } from '.prisma/client';
+import { Inventory_report, Inventory_scanned } from '.prisma/client';
 
 export class ImportInventoryReportDto {
-  qrs: number[];
+  scanned: Inventory_scanned[];
   inventory: (Inventory_report & { updatedAt: Date })[];
 }

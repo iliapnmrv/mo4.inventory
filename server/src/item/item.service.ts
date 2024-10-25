@@ -357,6 +357,7 @@ export class ItemService {
     delete updated.createdAt;
     delete updated.updatedAt;
     delete updated.instruction_id;
+    delete updated.exists;
 
     const differencesKeys = Object.keys(updated).filter(
       (key) => updated[key] !== prev[key],
