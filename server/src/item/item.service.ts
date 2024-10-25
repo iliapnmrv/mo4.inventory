@@ -19,6 +19,7 @@ import {
   User,
 } from '.prisma/client';
 import { removeEmptyValuesFromObject } from 'src/utils/utils';
+import * as moment from 'moment';
 
 @Injectable()
 export class ItemService {
@@ -346,6 +347,9 @@ export class ItemService {
       data: {
         ...updateItemDto,
         updatedAt: new Date(),
+        checked_at: updateItemDto.checked_at
+          ? moment(updateItemDto.checked_at).toDate()
+          : prev.checked_at,
         instruction_id: similarItem?.instruction_id,
         stock_items: {
           connect: similarItem?.stock_items?.map(({ id }) => ({ id })),
@@ -357,7 +361,7 @@ export class ItemService {
     delete updated.createdAt;
     delete updated.updatedAt;
     delete updated.instruction_id;
-    delete updated.exists;
+    delete updated.checked_at;
 
     const differencesKeys = Object.keys(updated).filter(
       (key) => updated[key] !== prev[key],

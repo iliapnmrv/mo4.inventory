@@ -10,8 +10,10 @@ import {
   Autocomplete,
   Box,
   Button,
+  Checkbox,
   Chip,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -36,7 +38,7 @@ import { useAppSelector } from "hooks/redux";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import "photoswipe/dist/photoswipe.css";
-import { useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Gallery, Item as PSItem } from "react-photoswipe-gallery";
 import { useGetCatalogsQuery } from "redux/catalog/catalog.api";
@@ -70,6 +72,7 @@ import {
   removeBasepathFromPathname,
 } from "src/utils/utils";
 import SelectedItems from "./SelectedItems";
+import moment from "moment";
 
 type Props = {};
 
@@ -111,6 +114,7 @@ const Item = (props: Props) => {
   const [itemToDelete, setItemToDelete] = useState(0);
   const [itemToArchive, setItemToArchive] = useState(0);
   const [stockQuery, setStockQuery] = useState<string>("");
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
@@ -439,21 +443,47 @@ const Item = (props: Props) => {
             </IconButton>
           </Box>
           {type === "edit" ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-              }}
-            >
-              <Box>
-                <Typography variant="h6" gutterBottom>
-                  Числится: {item?.analysis.listed ?? 0}
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  В наличии: {item?.analysis.in_stock}
-                </Typography>
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    Числится: {item?.analysis.listed ?? 0}
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    В наличии: {item?.analysis.in_stock}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    Участвовал в инвентаризации:{" "}
+                    {item?.last_found_at
+                      ? moment(item.last_found_at).format("DD.MM.YYYY HH:mm:ss")
+                      : "--"}
+                  </Typography>
+                  <Tooltip title="Произвольная проверка карточки">
+                    <Typography variant="h6" gutterBottom>
+                      Проверено:{" "}
+                      {item?.checked_at
+                        ? moment(item.checked_at).format("DD.MM.YYYY HH:mm:ss")
+                        : "--"}
+                    </Typography>
+                  </Tooltip>
+                </Box>
               </Box>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Проверен"
+                value={isChecked}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setIsChecked(event.target.checked)
+                }
+              />
             </Box>
           ) : null}
           {type === "multiple_edit" ? <SelectedItems /> : null}

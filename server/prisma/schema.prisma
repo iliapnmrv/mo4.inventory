@@ -28,7 +28,7 @@ model Item {
   createdAt              DateTime?            @default(now())
   updatedAt              DateTime?            @updatedAt
   last_found_at          DateTime?
-  exists                 Boolean?             @default(false)
+  checked_at             DateTime?
   instruction_id         Int?
   files                  File[]
   inventory_not_found    Inventory_not_found?

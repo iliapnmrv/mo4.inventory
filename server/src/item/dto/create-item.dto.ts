@@ -13,4 +13,5 @@ export class CreateItemDto {
   place_id: number;
   device_id: number;
   type_id: number;
+  checked_at: Date;
 }

@@ -33,6 +33,8 @@ export type IItem = {
   files?: IFile[];
   instruction?: IFile;
   stock_items?: Stock[];
+  last_found_at?: Date;
+  checked_at?: Date;
 };
 
 export type Response<T> = {

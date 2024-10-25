@@ -64,7 +64,7 @@ export class InventoryService {
     });
 
     await this.prisma.inventory_scanned.createMany({
-      data: scanned.map((scan) => ({
+      data: scanned.map(({ id, ...scan }) => ({
         ...scan,
         createdAt: moment(scan.createdAt).toDate(),
       })),
