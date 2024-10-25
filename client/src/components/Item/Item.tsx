@@ -229,6 +229,7 @@ const Item = (props: Props) => {
       if (type === "edit") {
         const response = await updateItem({
           ...convertIntObj(values),
+          checked_at: isChecked ? moment().toDate() : undefined,
         }).unwrap();
         enqueueSnackbar(`Успешно обновлено ${QRzeros(item.qr)}`, {
           variant: "success",
