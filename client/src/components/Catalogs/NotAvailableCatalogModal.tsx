@@ -94,7 +94,9 @@ const NotAvailableModal = ({ open, setOpen, items }: Props) => {
                           {index + 1}
                         </TableCell>
                         <TableCell>{row.qr ?? row.id}</TableCell>
-                        <TableCell align="right">{row.name}</TableCell>
+                        <TableCell align="right">
+                          {row.name === "Не в учете" ? row.model : row.name}
+                        </TableCell>
                       </TableRow>
                     ))
                   : null}
