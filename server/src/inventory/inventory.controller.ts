@@ -62,4 +62,9 @@ export class InventoryController {
   getLatestInventoryName() {
     return this.inventoryService.getLatestInventoryName();
   }
+
+  @Get('scanned')
+  getInventoryScanned() {
+    return this.inventoryService.getInventoryScanned();
+  }
 }

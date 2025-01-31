@@ -203,4 +203,8 @@ export class InventoryService {
     );
     return files.length ? files[0] : undefined;
   }
+
+  async getInventoryScanned() {
+    return await this.prisma.inventory_scanned.findMany();
+  }
 }

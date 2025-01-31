@@ -73,7 +73,6 @@ export class FileController {
   @Post(':qr')
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: FileUploadDto })
-  @ApiResponse({ status: 201, type: ResFileUploadDto, isArray: true })
   @UseInterceptors(
     FilesInterceptor('files', 10, {
       storage: diskStorage({
@@ -93,25 +92,23 @@ export class FileController {
     @Param('qr') qr: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Req() { user }: Request,
-  ): Promise<File[]> {
+  ): Promise<ResFileUploadDto[]> {
     return this.fileService.uploadFiles(files, +qr, user);
   }
 
-  /**
-   * Delete instruction with `id`
-   */
   @Delete('instruction/:id')
-  @ApiResponse({ status: 200, type: ResInstructionUploadDto })
-  deleteInscruction(@Param('id') id: string, @Req() { user }: Request) {
+  deleteInscruction(
+    @Param('id') id: string,
+    @Req() { user }: Request,
+  ): Promise<ResInstructionUploadDto> {
     return this.fileService.deleteInstruction(+id, user);
   }
 
-  /**
-   * Delete file with `id`
-   */
   @Delete(':id')
-  @ApiResponse({ status: 200, type: ResFileUploadDto })
-  deleteFile(@Param('id') id: string, @Req() { user }: Request) {
+  deleteFile(
+    @Param('id') id: string,
+    @Req() { user }: Request,
+  ): Promise<ResFileUploadDto> {
     return this.fileService.deleteFile(+id, user);
   }
 }

@@ -4,18 +4,15 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
   Req,
 } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { AvailableNamesResponse } from './dto/available-names.dto';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
@@ -51,24 +48,15 @@ export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
   @Post()
-  @ApiOperation({
-    summary: 'Create new item',
-  })
   create(@Body() createItemDto: CreateItemDto, @Req() { user }: Request) {
     return this.itemService.create(createItemDto, user);
   }
 
-  @ApiOperation({
-    summary: 'Get all available names',
-  })
   @Get('names')
-  findAvailableNames() {
+  findAvailableNames(): Promise<AvailableNamesResponse[]> {
     return this.itemService.findUniqueNames();
   }
 
-  @ApiOperation({
-    summary: 'Check if serial number is available',
-  })
   @Get('serial_number')
   findSerialNumberAvailable(@Query('serial_number') serial_number: string) {
     return this.itemService.findSerialNumberAvailable(serial_number);
@@ -87,17 +75,11 @@ export class ItemController {
     return this.itemService.findSuggestions(query);
   }
 
-  /**
-   * Get all items
-   */
   @Get()
   findAll(@Query() query: Query) {
     return this.itemService.findAll(query);
   }
 
-  /**
-   * export
-   */
   @Get('export')
   export(@Query() query: Query) {
     return this.itemService.export(query);
@@ -107,19 +89,13 @@ export class ItemController {
    * Get one item
    */
   @Get(':qr')
-  findOne(@Param('qr') qr: string) {
-    return this.itemService.findOne(+qr);
+  findOne(@Param('qr', new ParseIntPipe()) qr: number) {
+    return this.itemService.findOne(qr);
   }
 
   /**
    * Update multiple qrs
    */
-  @ApiCookieAuth()
-  @ApiResponse({
-    status: 201,
-    description: 'The records have been successfully updated',
-    isArray: true,
-  })
   @Patch('qrs')
   updateMany(
     @Query('qrs') qrs: string,
@@ -131,38 +107,44 @@ export class ItemController {
 
   @Patch(':qr')
   update(
-    @Param('qr') qr: string,
+    @Param('qr', new ParseIntPipe()) qr: number,
     @Body() updateItemDto: UpdateItemDto,
     @Req() { user }: Request,
   ) {
-    return this.itemService.update(+qr, updateItemDto, user);
+    return this.itemService.update(qr, updateItemDto, user);
   }
 
   @Patch('archive/:qr')
-  moveToArchive(@Param('qr') qr: string, @Req() { user }: Request) {
-    return this.itemService.moveToArchive(+qr, user);
+  moveToArchive(
+    @Param('qr', new ParseIntPipe()) qr: number,
+    @Req() { user }: Request,
+  ) {
+    return this.itemService.moveToArchive(qr, user);
   }
 
   @Delete(':qr')
-  remove(@Param('qr') qr: string, @Req() { user }: Request) {
-    return this.itemService.remove(+qr, user);
+  remove(
+    @Param('qr', new ParseIntPipe()) qr: number,
+    @Req() { user }: Request,
+  ) {
+    return this.itemService.remove(qr, user);
   }
 
   @Post(':model/stock/:stockId')
   addStock(
     @Param('model') model: string,
-    @Param('stockId') stockId: string,
+    @Param('stockId', new ParseIntPipe()) stockId: number,
     @Req() { user }: Request,
   ) {
-    return this.itemService.addStock(model, +stockId, user);
+    return this.itemService.addStock(model, stockId, user);
   }
 
   @Delete(':model/stock/:stockId')
   removeStock(
     @Param('model') model: string,
-    @Param('stockId') stockId: string,
+    @Param('stockId', new ParseIntPipe()) stockId: number,
     @Req() { user }: Request,
   ) {
-    return this.itemService.removeStock(model, +stockId, user);
+    return this.itemService.removeStock(model, stockId, user);
   }
 }

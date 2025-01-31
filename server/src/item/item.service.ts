@@ -274,7 +274,9 @@ export class ItemService {
     return (await this.prisma.item.findFirst({ orderBy: { qr: 'desc' } })).qr;
   }
 
-  async findSerialNumberAvailable(serial_number: string) {
+  async findSerialNumberAvailable(
+    serial_number: string,
+  ): Promise<{ exists: boolean }> {
     const exists = await this.prisma.item.findFirst({
       where: { serial_number },
     });

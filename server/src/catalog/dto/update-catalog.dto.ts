@@ -1,5 +1,4 @@
-import { Status } from '.prisma/client';
+import { OmitType } from '@nestjs/swagger';
+import { CatalogEntity } from '../entities/catalog.entity';
 
-export interface UpdateCatalogDto extends Omit<Status, 'id'> {}
-
-export class UpdateCatalogDto {}
+export class UpdateCatalogDto extends OmitType(CatalogEntity, ['id']) {}

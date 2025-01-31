@@ -8,9 +8,8 @@ import {
   Table as TableMUI,
   TableRow,
 } from "@mui/material";
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { IItem, useLazyGetItemQuery } from "redux/item/item.api";
+import { IItem } from "redux/item/item.api";
 import { ItemNames } from "src/constants/translations";
 import Row from "./Row";
 
@@ -24,7 +23,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const Table = ({
+export const ItemsTable = ({
   data,
   showPlace,
   hasNextPage,
@@ -89,5 +88,3 @@ const Table = ({
     </InfiniteScroll>
   );
 };
-
-export const MemoTable = Table;

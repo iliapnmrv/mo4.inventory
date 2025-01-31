@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   output          = "../node_modules/.prisma/client"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
@@ -27,9 +27,9 @@ model Item {
   type_id                Int
   createdAt              DateTime?            @default(now())
   updatedAt              DateTime?            @updatedAt
+  instruction_id         Int?
   last_found_at          DateTime?
   checked_at             DateTime?
-  instruction_id         Int?
   files                  File[]
   inventory_not_found    Inventory_not_found?
   device                 Device               @relation(fields: [device_id], references: [id])
@@ -107,17 +107,18 @@ model Inventory_not_found {
   item_qr Int  @unique
   item    Item @relation(fields: [item_qr], references: [qr], onDelete: Cascade)
 }
+
 model Inventory_scanned {
-  id      Int  @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   inventoryNum Int
-  name String
-  status Int
-  model String
-  serialNum     String
-  position      Int?
-  place         String?
-  trace         String?
-  createdAt     DateTime
+  name         String
+  status       Int
+  model        String
+  serialNum    String
+  position     Int?
+  place        String?
+  trace        String?
+  createdAt    DateTime
 }
 
 model Inventory_report {

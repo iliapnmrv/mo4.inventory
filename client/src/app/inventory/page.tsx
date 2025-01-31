@@ -1,9 +1,9 @@
 "use client";
 
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import {
   Box,
   Button,
-  Checkbox,
   Paper,
   Table,
   TableBody,
@@ -11,21 +11,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import InventoryReport from "components/InventoryReport/InventoryReport";
+import InventoryScanned from "components/InventoryScanned/InventoryScanned";
+import moment from "moment";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 import {
   useGetInventoryQuery,
-  useGetInventoryReportQuery,
   useGetLatestInventoryQuery,
   useUploadInventoryMutation,
 } from "redux/inventory/inventory.api";
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import moment from "moment";
 import { IException } from "src/types/types";
-import { useSnackbar } from "notistack";
-import InventoryReport from "components/InventoryReport/InventoryReport";
-import Link from "next/link";
 
 const Inventory = () => {
   const { data: inventory } = useGetInventoryQuery();
@@ -37,6 +34,7 @@ const Inventory = () => {
   const { data: latestInventory } = useGetLatestInventoryQuery();
 
   const [showReport, setShowReport] = useState<boolean>(false);
+  const [showScanned, setShowScanned] = useState<boolean>(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -89,11 +87,12 @@ const Inventory = () => {
           {latestInventory?.name} -{" "}
           {moment(latestInventory?.upload_date).format("LLL")}
         </Box>
-        <Link href={{ query: { modal: "results" }, pathname: "/inventory" }}>
-          <Button variant="text" onClick={() => setShowReport(true)}>
-            Результаты инвентаризации
-          </Button>
-        </Link>
+        <Button variant="text" onClick={() => setShowReport(true)}>
+          История сканирований
+        </Button>
+        <Button variant="text" onClick={() => setShowScanned(true)}>
+          Результаты инвентаризации
+        </Button>
       </Box>
 
       <TableContainer component={Paper}>
@@ -126,6 +125,7 @@ const Inventory = () => {
         </Table>
       </TableContainer>
       <InventoryReport open={showReport} setOpen={setShowReport} />
+      <InventoryScanned open={showScanned} setOpen={setShowScanned} />
     </>
   );
 };

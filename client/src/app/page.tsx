@@ -25,7 +25,6 @@ import type { Filters as IFilters } from "components/Filters/Filters";
 import Filters from "components/Filters/Filters";
 import Item from "components/Item/Item";
 import SelectedItems from "components/Item/SelectedItems";
-import { MemoTable } from "components/Table/Table";
 import { useActions } from "hooks/actions";
 import { useDebounce } from "hooks/debounce";
 import { useAppSelector } from "hooks/redux";
@@ -41,6 +40,7 @@ import {
 } from "redux/item/item.api";
 import { getItems } from "src/api/api";
 import ClearIcon from "@mui/icons-material/Clear";
+import { ItemsTable } from "components/Table/ItemsTable";
 
 export default function Home() {
   const [exportData] = useExportDataMutation();
@@ -359,7 +359,7 @@ export default function Home() {
             <SelectedItems />
           </Box>
 
-          <MemoTable
+          <ItemsTable
             isLoading={isLoading}
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}

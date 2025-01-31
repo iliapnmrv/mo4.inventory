@@ -254,17 +254,12 @@ const Item = (props: Props) => {
         );
         resetSelected();
       }
-      if (type === "create" || type === "copy") {
+      if (type === "create") {
         //@ts-ignore
         const response = await createItem(convertIntObj(values)).unwrap();
         enqueueSnackbar(`Создано ${QRzeros(response.qr)}`);
-        router.push(
-          `${removeBasepathFromPathname(pathname)}/?qr=${
-            response.qr
-          }&type=edit&modalType=qr`
-        );
       }
-      router.back();
+      router.push("/");
       reset({});
       setFiles(null);
       setInstruction(null);

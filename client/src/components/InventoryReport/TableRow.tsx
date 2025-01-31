@@ -8,7 +8,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { MemoTable } from "components/Table/Table";
+import { ItemsTable } from "components/Table/ItemsTable";
 import { FC, useState } from "react";
 import { ReportItem } from "redux/inventory/inventory.api";
 
@@ -42,7 +42,7 @@ const Row: FC<Props> = ({ row }) => {
         </TableCell>
         <TableCell align="right">
           <span title="Не найдено">{row.remainder}</span> /{" "}
-          <span title="Имеется в базе">{row.kolvo}</span>
+          <span title="Имеется в базе">{row.kolvo ?? 0}</span>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -52,7 +52,7 @@ const Row: FC<Props> = ({ row }) => {
               <Typography variant="h6" gutterBottom component="div">
                 Ненайденные QR коды
               </Typography>
-              <MemoTable
+              <ItemsTable
                 showPlace
                 showCheckboxes={false}
                 data={row.items.map((item) => item.item)}
