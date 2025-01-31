@@ -88,10 +88,10 @@ const Inventory = () => {
           {moment(latestInventory?.upload_date).format("LLL")}
         </Box>
         <Button variant="text" onClick={() => setShowReport(true)}>
-          История сканирований
+          Результаты инвентаризации
         </Button>
         <Button variant="text" onClick={() => setShowScanned(true)}>
-          Результаты инвентаризации
+          Журнал инвентаризации
         </Button>
       </Box>
 

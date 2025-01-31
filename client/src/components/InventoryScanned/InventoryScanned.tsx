@@ -61,7 +61,7 @@ const InventoryScanned = ({ open, setOpen }: Props) => {
             }}
           >
             <Typography variant="h5" gutterBottom>
-              История сканирований инвентаризации
+              Пошаговый журнал инвентаризации
             </Typography>
             <IconButton onClick={() => setOpen(false)}>
               <CloseOutlinedIcon />
