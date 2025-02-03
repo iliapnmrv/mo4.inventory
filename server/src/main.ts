@@ -41,14 +41,14 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      forbidUnknownValues: false,
-      enableDebugMessages: true,
-      forbidNonWhitelisted: true,
-      whitelist: true,
-    }),
-  );
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     forbidUnknownValues: false,
+  //     enableDebugMessages: true,
+  //     forbidNonWhitelisted: true,
+  //     whitelist: true,
+  //   }),
+  // );
 
   // app.enableVersioning({
   //   type: VersioningType.URI,
