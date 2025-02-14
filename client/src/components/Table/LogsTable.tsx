@@ -21,14 +21,13 @@ const LogsTable = ({ logs }: Props) => {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>№</TableCell>
-            <TableCell>Описание</TableCell>
             <TableCell>Дата создания</TableCell>
+            <TableCell>Описание</TableCell>
             <TableCell>Исполнитель</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {logs?.map((log, index) => (
+          {logs?.map((log) => (
             <TableRow
               key={log.id}
               sx={{
@@ -37,9 +36,8 @@ const LogsTable = ({ logs }: Props) => {
                 },
               }}
             >
-              <TableCell>{index + 1}.</TableCell>
-              <TableCell>{log.description}</TableCell>
               <TableCell>{moment(log.created_at).format("LLL")}</TableCell>
+              <TableCell>{log.description}</TableCell>
               <TableCell>{log.author}</TableCell>
             </TableRow>
           ))}
