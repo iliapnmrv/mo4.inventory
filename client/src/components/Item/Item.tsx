@@ -254,7 +254,7 @@ const Item = (props: Props) => {
         );
         resetSelected();
       }
-      if (type === "create") {
+      if (type === "create" || type === "copy") {
         //@ts-ignore
         const response = await createItem(convertIntObj(values)).unwrap();
         enqueueSnackbar(`Создано ${QRzeros(response.qr)}`);
