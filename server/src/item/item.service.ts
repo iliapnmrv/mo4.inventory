@@ -293,7 +293,7 @@ export class ItemService {
     const item = await this.prisma.item.findUnique({
       where: { qr },
       include: {
-        logs: true,
+        logs: { orderBy: { created_at: 'desc' } },
         instruction: true,
         status: true,
         device: true,
