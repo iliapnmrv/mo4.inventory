@@ -47,7 +47,7 @@ export const ItemsTable = ({
       <TableContainer component={Paper}>
         <TableMUI sx={{ width: 1000 }} stickyHeader size="small">
           <TableHead>
-            <TableRow>
+            <TableRow style={{ wordBreak: "break-word" }}>
               {showCheckboxes ? <TableCell></TableCell> : null}
               <TableCell> {ItemNames.qr}</TableCell>
               <TableCell>
