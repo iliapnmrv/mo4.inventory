@@ -35,6 +35,7 @@ export type InventoryScan = {
   // 2 - Не в учете
   // 3 - Сверх учета
   // 4 - Дубликат
+  // 5 - Неверный МОЛ
   status: number;
   model: string;
   serialNum: string;

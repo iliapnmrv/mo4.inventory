@@ -41,6 +41,7 @@ const Row: FC<Props> = ({ item }) => {
           {item.status === 2 && "Не в учете"}
           {item.status === 3 && "Сверх учета"}
           {item.status === 4 && "Повторное сканирование"}
+          {item.status === 5 && "Неверный МОЛ"}
         </TableCell>
         <TableCell>
           {moment(item.createdAt).format("DD.MM.YYYY HH:mm:ss")}
